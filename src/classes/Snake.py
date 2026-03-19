@@ -1,16 +1,11 @@
 from src.classes.enums.Direction import Direction
-import pygame
-from pygame.sprite import Sprite
+from src.classes.BoxElement import BoxElement
 
 
-class Snake(Sprite):
+class Snake(BoxElement):
     def __init__(self):
-        super().__init__()
+        super().__init__('#389844', 20, 20)
 
-        self.size = 20
-        self.image = pygame.Surface((self.size, self.size))
-        self.image.fill('#389844')
-        self.rect = self.image.get_rect(x=20, y=20)
         self.current_direction = Direction
         self.current_direction = Direction.DOWN
         self.px_count = 0
@@ -57,6 +52,9 @@ class Snake(Sprite):
             case Direction.RIGHT:
                 self.go_right()
 
+        print(f'Snake position ({self.rect.x}, {self.rect.y})')
+        return self.rect.x, self.rect.y
+
     def go_down(self):
         self.rect.y += 20
 
@@ -81,5 +79,6 @@ class Snake(Sprite):
     def set_y(self, y):
         self.rect.y = y
 
+    # Methods that will be call every frame
     def update(self):
         self.move()

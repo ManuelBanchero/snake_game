@@ -1,8 +1,9 @@
 import pygame
-from pygame.sprite import GroupSingle
+from pygame.sprite import GroupSingle, Group, spritecollide
 from src.classes.enums.Direction import Direction
 from src.classes.Snake import Snake
 from src.config.config import SCREEN_WIDTH, SCREEN_HEIGTH
+from src.classes.Apple import Apple
 
 
 class Game():
@@ -30,11 +31,20 @@ class Game():
         # Will have the snake class after Game.initialie() method is executed
         self.snake = None
 
+        # Tail Group
+        self.tail_group = Group()
+
+        # Apple Group
+        self.apple_group = Group()
+
     # Use it before run the game
     def initialize(self):
         # Add snake
         self.snake_group.add(Snake())
         self.snake = self.snake_group.sprite
+
+        # Add an apple
+        self.apple_group.add(Apple())
 
     def set_limits(self, rect):
         if rect.get_x() < self.start_x_limit:
@@ -57,6 +67,11 @@ class Game():
         if keys[pygame.K_RIGHT]:
             self.snake.set_direction(Direction.RIGHT)
 
+    def snake_eats_apple(self):
+        if spritecollide(self.snake, self.apple_group, True):
+            return True
+        return False
+
     # Use it while running the game
     def update(self):
         # Screen styles
@@ -64,9 +79,17 @@ class Game():
         # Box variables
         pygame.draw.rect(self.screen, '#98e5a5',
                          self.game_box, self.box_border)
-        # Game
+        # User interactions
         self.user_input()
+
+        # Apple
+        self.apple_group.draw(self.screen)
+        self.apple_group.update()
+
         # Snake
         self.snake_group.draw(self.screen)
         self.snake_group.update()
         self.set_limits(self.snake)
+
+        if self.snake_eats_apple():
+            print('Apple has been eaten')
