@@ -4,7 +4,7 @@ from src.classes.BoxElement import BoxElement
 
 class Snake(BoxElement):
     def __init__(self):
-        super().__init__('#389844', 20, 20)
+        super().__init__('#389844', 80, 80)
 
         self.current_direction = Direction
         self.current_direction = Direction.DOWN
@@ -52,7 +52,6 @@ class Snake(BoxElement):
             case Direction.RIGHT:
                 self.go_right()
 
-        print(f'Snake position ({self.rect.x}, {self.rect.y})')
         return self.rect.x, self.rect.y
 
     def go_down(self):
