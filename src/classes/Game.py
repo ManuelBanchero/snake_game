@@ -103,7 +103,7 @@ class Game():
             random_grid_y = self.start_y_limit + \
                 (random_index_y * self.snake.size)
 
-            if (random_grid_x, random_grid_y) in self.snake_positions:
+            if (random_grid_x, random_grid_y) not in self.snake_positions:
                 return random_grid_x, random_grid_y
 
     def reset(self):
@@ -114,6 +114,8 @@ class Game():
         self.snake.set_y(80)
         # Set snake direction to down
         self.snake.set_direction(Direction.DOWN)
+        # Empty snake positions
+        self.snake_positions.clear()
         # Clear apple
         self.apple_group.empty()
         # Set apple to a new position
@@ -151,6 +153,7 @@ class Game():
                 # Delete the extra item (the first element of the array)
                 del self.snake_positions[:1]
 
+            print(self.snake_positions)
             for i, tail in enumerate(self.tail_group):
                 # If is the last element -> is the curren snake position (we don't wanna use it)
                 if i == len(self.snake_positions) - 1:
@@ -168,7 +171,3 @@ class Game():
 
             # Create a new Tail
             self.tail_group.add(Tail(-200, -200))
-
-        # Snake hits his Tail
-        if self.snake_hits_tail():
-            print('Hit!')

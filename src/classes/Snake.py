@@ -35,7 +35,7 @@ class Snake(BoxElement):
                 And so on
             And we just increase the value when the px_count variable hits 20px or more
         """
-        self.px_count += 0.6
+        self.px_count += 2
         if self.px_count <= 20:
             return -1, -1
 

@@ -25,8 +25,6 @@ class MainMenu():
         self.snake_surf = pygame.transform.scale(snake_img, (120, 120))
         self.snake_rect = self.snake_surf.get_rect(midbottom=(200, 140))
 
-        print(self.snake_surf.get_size())
-
     def update(self):
         self.screen.fill('#0c200d')
         self.screen.blit(self.title_surf, self.title_rect)
