@@ -85,19 +85,26 @@ class Game():
         return False
 
     def get_random_pos(self):
-        x = self.get_valid_pos(self.start_x_limit, self.end_x_limit)
-        y = self.get_valid_pos(self.start_y_limit, self.end_y_limit)
+        return self.get_valid_pos()
 
-        return x, y
+    def get_valid_pos(self):
+        # This gives me the amount of grids I have in x and y (ex: (340px - 40px) // 20px)
+        grids_x = ((self.end_x_limit - self.start_x_limit) //
+                   self.snake.size) - 1
+        grids_y = ((self.end_y_limit - self.start_y_limit) //
+                   self.snake.size) - 1
 
-    def get_valid_pos(self, start_num, end_num):
-        num = randint(start_num, end_num)
-        multiple = self.snake.size
+        while True:
+            random_index_x = randint(0, grids_x)
+            random_index_y = randint(0, grids_y)
 
-        while num % multiple != 0:
-            num = randint(start_num, end_num)
+            random_grid_x = self.start_x_limit + \
+                (random_index_x * self.snake.size)
+            random_grid_y = self.start_y_limit + \
+                (random_index_y * self.snake.size)
 
-        return num
+            if (random_grid_x, random_grid_y) in self.snake_positions:
+                return random_grid_x, random_grid_y
 
     def reset(self):
         # Clear tails
