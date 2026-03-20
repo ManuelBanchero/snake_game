@@ -37,7 +37,7 @@ class Snake(BoxElement):
         """
         self.px_count += 0.6
         if self.px_count <= 20:
-            return
+            return -1, -1
 
         # Reestar px_count
         self.px_count -= 20
@@ -80,4 +80,4 @@ class Snake(BoxElement):
 
     # Methods that will be call every frame
     def update(self):
-        self.move()
+        pass

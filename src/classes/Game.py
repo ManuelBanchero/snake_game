@@ -31,12 +31,16 @@ class Game():
         self.snake_group = GroupSingle()
         # Will have the snake class after Game.initialie() method is executed
         self.snake = None
+        self.snake_positions = [(0, 0)]
 
         # Tail Group
         self.tail_group = Group()
 
         # Apple Group
         self.apple_group = Group()
+
+        # Score (or amount of apple eaten)
+        self.score = 0
 
     # Use it before run the game
     def initialize(self):
@@ -45,7 +49,7 @@ class Game():
         self.snake = self.snake_group.sprite
 
         # Add an apple
-        self.apple_group.add(Apple(40, 340))
+        self.apple_group.add(Apple(220, 120))
 
     def set_limits(self, rect):
         if rect.get_x() < self.start_x_limit:
@@ -89,6 +93,7 @@ class Game():
         return num
 
     # Use it while running the game
+
     def update(self):
         # Screen styles
         self.screen.fill('#0c200d')
@@ -105,10 +110,23 @@ class Game():
         # Snake
         self.snake_group.draw(self.screen)
         self.snake_group.update()
+
+        # Set box limits to the snake
         self.set_limits(self.snake)
 
+        # Move snake and set position
+        x_pos, y_pos = self.snake.move()
+        if x_pos != -1 and y_pos != -1:
+            self.snake_positions.append((x_pos, y_pos))
+            # The list always needs to be 1 more than the score
+            if len(self.snake_positions) > self.score + 1:
+                # Delete the extra item (the first element of the array)
+                del self.snake_positions[:1]
+            print(self.snake_positions)
+
+        # Snake an apple collision
         if self.snake_eats_apple():
-            print('Apple has been eaten')
             x, y = self.get_random_pos()
-            print(f'Apple added in ({x}, {y})')
             self.apple_group.add(Apple(x, y))
+            self.score += 1
+            print(self.score)
