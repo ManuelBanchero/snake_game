@@ -2,8 +2,9 @@ import pygame
 from pygame.sprite import GroupSingle, Group, spritecollide
 from src.classes.enums.Direction import Direction
 from src.classes.Snake import Snake
-from src.config.config import SCREEN_WIDTH, SCREEN_HEIGTH
 from src.classes.Apple import Apple
+from src.classes.Tail import Tail
+from src.config.config import SCREEN_WIDTH, SCREEN_HEIGTH
 from random import randint
 
 
@@ -103,13 +104,17 @@ class Game():
         # User interactions
         self.user_input()
 
+        # Snake
+        self.snake_group.draw(self.screen)
+        self.snake_group.update()
+
         # Apple
         self.apple_group.draw(self.screen)
         self.apple_group.update()
 
-        # Snake
-        self.snake_group.draw(self.screen)
-        self.snake_group.update()
+        # Tail
+        self.tail_group.draw(self.screen)
+        self.tail_group.update()
 
         # Set box limits to the snake
         self.set_limits(self.snake)
@@ -118,15 +123,26 @@ class Game():
         x_pos, y_pos = self.snake.move()
         if x_pos != -1 and y_pos != -1:
             self.snake_positions.append((x_pos, y_pos))
-            # The list always needs to be 1 more than the score
+            # The list always needs to be one more than the score
             if len(self.snake_positions) > self.score + 1:
                 # Delete the extra item (the first element of the array)
                 del self.snake_positions[:1]
-            print(self.snake_positions)
+
+            for i, tail in enumerate(self.tail_group):
+                # If is the last element -> is the curren snake position (we don't wanna use it)
+                if i == len(self.snake_positions) - 1:
+                    continue
+
+                # Update tail pos
+                tail_x, tail_y = self.snake_positions[i]
+                tail.set_pos(tail_x, tail_y)
 
         # Snake an apple collision
         if self.snake_eats_apple():
             x, y = self.get_random_pos()
             self.apple_group.add(Apple(x, y))
             self.score += 1
-            print(self.score)
+
+            # Create a new Tail
+            x, y = self.snake_positions[0]
+            self.tail_group.add(Tail(x, y))
