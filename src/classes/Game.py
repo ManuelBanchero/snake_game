@@ -50,17 +50,18 @@ class Game():
         self.snake = self.snake_group.sprite
 
         # Add an apple
-        self.apple_group.add(Apple(220, 120))
+        x, y = self.get_random_pos()
+        self.apple_group.add(Apple(x, y))
 
-    def set_limits(self, rect):
-        if rect.get_x() < self.start_x_limit:
-            rect.set_x(self.start_x_limit)
-        if rect.get_x() > self.end_x_limit:
-            rect.set_x(self.end_x_limit)
-        if rect.get_y() < self.start_y_limit:
-            rect.set_y(self.start_y_limit)
-        if rect.get_y() > self.end_y_limit:
-            rect.set_y(self.end_y_limit)
+    def snake_hit_limits(self):
+        if self.snake.get_x() < self.start_x_limit:
+            return True
+        if self.snake.get_x() > self.end_x_limit:
+            return True
+        if self.snake.get_y() < self.start_y_limit:
+            return True
+        if self.snake.get_y() > self.end_y_limit:
+            return True
 
     def user_input(self):
         keys = pygame.key.get_pressed()
@@ -75,6 +76,11 @@ class Game():
 
     def snake_eats_apple(self):
         if spritecollide(self.snake, self.apple_group, True):
+            return True
+        return False
+
+    def snake_hits_tail(self):
+        if spritecollide(self.snake, self.tail_group, False):
             return True
         return False
 
@@ -93,8 +99,21 @@ class Game():
 
         return num
 
-    # Use it while running the game
+    def reset(self):
+        # Clear tails
+        self.tail_group.empty()
+        # Set snake to start position
+        self.snake.set_x(80)
+        self.snake.set_y(80)
+        # Set snake direction to down
+        self.snake.set_direction(Direction.DOWN)
+        # Clear apple
+        self.apple_group.empty()
+        # Set apple to a new position
+        x, y = self.get_random_pos()
+        self.apple_group.add(Apple(x, y))
 
+    # Use it while running the game
     def update(self):
         # Screen styles
         self.screen.fill('#0c200d')
@@ -104,10 +123,6 @@ class Game():
         # User interactions
         self.user_input()
 
-        # Snake
-        self.snake_group.draw(self.screen)
-        self.snake_group.update()
-
         # Apple
         self.apple_group.draw(self.screen)
         self.apple_group.update()
@@ -116,8 +131,9 @@ class Game():
         self.tail_group.draw(self.screen)
         self.tail_group.update()
 
-        # Set box limits to the snake
-        self.set_limits(self.snake)
+        # Snake
+        self.snake_group.draw(self.screen)
+        self.snake_group.update()
 
         # Move snake and set position
         x_pos, y_pos = self.snake.move()
@@ -144,5 +160,8 @@ class Game():
             self.score += 1
 
             # Create a new Tail
-            x, y = self.snake_positions[0]
-            self.tail_group.add(Tail(x, y))
+            self.tail_group.add(Tail(-200, -200))
+
+        # Snake hits his Tail
+        if self.snake_hits_tail():
+            print('Hit!')
