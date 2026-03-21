@@ -116,11 +116,15 @@ class Game():
         self.snake.set_direction(Direction.DOWN)
         # Empty snake positions
         self.snake_positions.clear()
+        self.snake_positions.append((80, 80))
+        self.snake.px_count = 0
         # Clear apple
         self.apple_group.empty()
         # Set apple to a new position
         x, y = self.get_random_pos()
         self.apple_group.add(Apple(x, y))
+        # Reset score
+        self.score = 0
 
     # Use it while running the game
     def update(self):
@@ -153,7 +157,6 @@ class Game():
                 # Delete the extra item (the first element of the array)
                 del self.snake_positions[:1]
 
-            print(self.snake_positions)
             for i, tail in enumerate(self.tail_group):
                 # If is the last element -> is the curren snake position (we don't wanna use it)
                 if i == len(self.snake_positions) - 1:
