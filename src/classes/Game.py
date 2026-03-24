@@ -43,6 +43,11 @@ class Game():
         # Score (or amount of apple eaten)
         self.score = 0
 
+        # Sounds
+        self.lose_sound = pygame.mixer.Sound(
+            'src/assets/sounds/lose_sound.mp3')
+        self.lose_sound.set_volume(0.2)
+
     # Use it before run the game
     def initialize(self):
         # Add snake
@@ -106,14 +111,19 @@ class Game():
             if (random_grid_x, random_grid_y) not in self.snake_positions:
                 return random_grid_x, random_grid_y
 
+    def game_lose(self):
+        return self.snake_hits_tail() or self.snake_hit_limits()
+
     def reset(self):
+        # Play lose sound
+        self.lose_sound.play()
         # Clear tails
         self.tail_group.empty()
         # Set snake to start position
         self.snake.set_x(80)
         self.snake.set_y(80)
         # Set snake direction to down
-        self.snake.set_direction(Direction.DOWN)
+        self.snake.reset_direction(Direction.DOWN)
         # Empty snake positions
         self.snake_positions.clear()
         self.snake_positions.append((80, 80))
@@ -168,6 +178,9 @@ class Game():
 
         # Snake an apple collision
         if self.snake_eats_apple():
+            # Play sound
+            self.snake.play_eat_sound()
+
             x, y = self.get_random_pos()
             self.apple_group.add(Apple(x, y))
             self.score += 1

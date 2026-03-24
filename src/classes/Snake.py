@@ -1,5 +1,6 @@
 from src.classes.enums.Direction import Direction
 from src.classes.BoxElement import BoxElement
+from pygame.mixer import Sound
 
 
 class Snake(BoxElement):
@@ -9,6 +10,10 @@ class Snake(BoxElement):
         self.current_direction = Direction
         self.current_direction = Direction.DOWN
         self.px_count = 0
+
+        # Sound
+        self.eat_sound = Sound('src/assets/sounds/snake_eating.mp3')
+        self.eat_sound.set_volume(0.2)
 
     def set_direction(self, direction):
         match direction:
@@ -24,6 +29,23 @@ class Snake(BoxElement):
             case Direction.RIGHT:
                 if self.current_direction != Direction.LEFT:
                     self.current_direction = Direction.RIGHT
+
+    """
+    This method is for the reset Game method, for those cases when 
+    the direction is set to up, so game can't reset direction to down
+    that way
+    """
+
+    def reset_direction(self, direction):
+        match direction:
+            case Direction.UP:
+                self.current_direction = Direction.UP
+            case Direction.DOWN:
+                self.current_direction = Direction.DOWN
+            case Direction.LEFT:
+                self.current_direction = Direction.LEFT
+            case Direction.RIGHT:
+                self.current_direction = Direction.RIGHT
 
     def move(self):
         """
@@ -77,6 +99,9 @@ class Snake(BoxElement):
 
     def set_y(self, y):
         self.rect.y = y
+
+    def play_eat_sound(self):
+        self.eat_sound.play()
 
     # Methods that will be call every frame
     def update(self):

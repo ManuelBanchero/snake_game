@@ -28,7 +28,7 @@ while running:
 
     if game_active:
         game.update()
-        if game.snake_hits_tail() or game.snake_hit_limits():
+        if game.game_lose():
             game_active = False
             game.reset()
     else:
