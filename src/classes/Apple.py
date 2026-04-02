@@ -1,4 +1,4 @@
-from src.classes.BoxElement import BoxElement
+from classes.BoxElement import BoxElement
 
 
 class Apple(BoxElement):

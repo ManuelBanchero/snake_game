@@ -1,5 +1,5 @@
 import pygame
-from src.config.config import SCREEN_WIDTH, SCREEN_HEIGTH
+from config.config import SCREEN_WIDTH, SCREEN_HEIGTH
 
 
 class MainMenu():

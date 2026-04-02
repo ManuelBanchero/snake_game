@@ -1,6 +1,6 @@
 import pygame
-from src.classes.Game import Game
-from src.classes.MainMenu import MainMenu
+from classes.Game import Game
+from classes.MainMenu import MainMenu
 
 # Initialize pygame
 pygame.init()

@@ -1,5 +1,5 @@
-from src.classes.enums.Direction import Direction
-from src.classes.BoxElement import BoxElement
+from classes.enums.Direction import Direction
+from classes.BoxElement import BoxElement
 from pygame.mixer import Sound
 
 

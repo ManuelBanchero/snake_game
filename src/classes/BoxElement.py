@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from src.config.config import BOX_SIZE
+from config.config import BOX_SIZE
 from abc import ABC, abstractmethod
 
 

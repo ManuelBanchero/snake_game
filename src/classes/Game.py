@@ -1,10 +1,10 @@
 import pygame
 from pygame.sprite import GroupSingle, Group, spritecollide
-from src.classes.enums.Direction import Direction
-from src.classes.Snake import Snake
-from src.classes.Apple import Apple
-from src.classes.Tail import Tail
-from src.config.config import SCREEN_WIDTH, SCREEN_HEIGTH
+from classes.enums.Direction import Direction
+from classes.Snake import Snake
+from classes.Apple import Apple
+from classes.Tail import Tail
+from config.config import SCREEN_WIDTH, SCREEN_HEIGTH
 from random import randint
 
 
